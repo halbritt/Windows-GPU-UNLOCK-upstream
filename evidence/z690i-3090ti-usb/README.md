@@ -214,3 +214,39 @@ verified; the PCI/subsystem/VBIOS identities above are observed software identit
 The iGPU was enabled, without a physical preboot GOP; the RTX display path is
 pinned by the capture. This is evidence for this exact board/BIOS/card profile,
 not general support for all RTX 3090 Ti systems.
+
+## Upstream integration validation — 2026-11-01
+
+PR #57 merges upstream `fd8bbea5b1db991805ffcd7ba84e73fa7867bd8a` in
+source revision `5fe72d8ca558534a3d946319464a4807be88bc46`.
+[revision-evidence.json](revision-evidence.json) binds that revision and Git tree
+to the original USB/internal EFI and boot-log hashes above, the unchanged BF16
+samples, and the new build artifacts. The original EFI pairs and four logs were
+rehashed from the retained private archives and matched this report.
+
+The merge preserves the newer B660M profile and upstream safety changes. Z690-I
+now selects the shared GA102 and AMI B660M firmware definitions; all 30 expanded
+identity/topology/firmware values match the original public profile. The Linux
+transaction test links `checks.c`, now required by upstream's captured PCI checks.
+
+Validation used Clang/LLD 20.1.2 and PowerShell 7.6.9:
+
+- 101 Python profile/parser tests and 12 family-boundary tests passed, including
+  Z690-I family/chip/memory selection.
+- Both USB and internal builders passed all 12 production-C host jobs using the
+  authenticated original capture, PROM and five firmware assets. This includes
+  graph/driver mutations, transaction failures, internal-child rejection of a
+  wrong GPT GUID and USB path, and USB-child rejection of an internal path before
+  hardware effects. All four rebuilt EFI applications passed PE verification.
+- 48 package checks, 18 mocked installer checks, automatic-transition rollback
+  and boot-copy attribution checks passed. PowerShell source parsing passed.
+- The actual Linux-built internal package passed the PowerShell inventory,
+  partition-header, child-manifest and EFI hash validator. A modified wrapper
+  was rejected; restoring it made validation pass again.
+
+These builds use synthetic partition identities and were never installed or
+booted. Their hashes differ from the original hardware-tested binaries. Host
+validation of this merged source does not extend the 2026-10-26 hardware results:
+those remain one USB and one internal boot on the exact BIOS 4601 / i9-12900KS /
+RTX 3090 Ti system recorded above. General Z690-I compatibility, repeated-boot
+reliability, sleep and hibernation remain unestablished.
