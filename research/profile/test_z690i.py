@@ -70,7 +70,7 @@ def main():
     job('write-lock', unlock, ['tests/test_preflight_lock.c', 'port.c'], profile)
     job('master-attributes', unlock, ['tests/test_master_attributes.c', *core], profile + defs + ['-DGU_HOST_WRITE_TEST'])
     latched = profile + defs + ['-DGU_EXPERIMENTAL_3090', '-DGU_ENTRY_LATCHED_SS1_FULL', '-DGU_INTERNAL_BOOT']
-    job('transaction', unlock, ['tests/test_efi_transaction.c', *core], latched, [prom, assets, out / 'cold.txt'])
+    job('transaction', unlock, ['tests/test_efi_transaction.c', 'checks.c', *core], latched, [prom, assets, out / 'cold.txt'])
     app = ['app_io.c', 'ownership.c', 'format.c', 'sha256.c', 'checks.c', *core]
     job('headless-usb', unlock, ['tests/test_headless.c', *app], latched + ['-DGU_AUTOMATIC_BOOT', '-DGU_HEADLESS_RESEARCH', '-DGU_USB_MEDIA'], [prom, out / 'cold.txt', assets])
     job('headless-internal', unlock, ['tests/test_headless.c', *app], latched + ['-DGU_AUTOMATIC_BOOT', '-DGU_HEADLESS_RESEARCH'], [prom, out / 'cold.txt', assets])

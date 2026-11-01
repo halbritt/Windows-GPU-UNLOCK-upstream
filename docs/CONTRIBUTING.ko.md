@@ -2,6 +2,8 @@
 
 [English](CONTRIBUTING.en.md) | **한국어**
 
+관리자는 [호환성 보고 분류 안내](COMPATIBILITY-TRIAGE.ko.md)에 따라 누락된 증거, 관련 보고, 실제 Windows 결과를 지원 적격성과 별도로 기록합니다.
+
 다른 메인보드·CPU·GPU의 환경 정보는 지원 확대 우선순위를 정하는 데 도움이 됩니다. **제보를 위해 EFI 부팅·BIOS 설정 변경·언락 실행을 할 필요가 없습니다.** EFI 지원은 정확히 일치하는 [공개된 장비 프로필](COMPATIBILITY.ko.md)에 한정되며 GPU 모델명이 같다는 이유만으로 호환되지는 않습니다.
 
 ## Windows에서 환경 수집
@@ -27,6 +29,11 @@ python .\tools\collect_compatibility.py > .\compatibility-report.json
 Secure Boot 상태, 실제 모니터 연결, PCI BDF/BAR, PROM, cold 상태와 사전 부팅 정리 가능 여부는 수집하지 않습니다. 가상·비 PCI 화면 어댑터는 `pci: null`로 표시합니다. WMI 드라이버 버전은 NVIDIA 배포 버전과 표기 방식이 다를 수 있습니다.
 
 ## 직접 제보하기
+
+이미 진단 캡처가 있다면 [오프라인 검사기](CHECK-COMPATIBILITY.ko.md)로 거부 사유와
+제한된 모델·구성 정보가 담긴 JSON을 만들고, 검토 후 양식의 선택 항목에 붙여 넣을 수
+있습니다. 비교 도구로 검사 보고서 두 개의 차이도 확인할 수 있습니다. 두 도구 모두
+언락을 실행하지 않으며, 제보를 위해 새 캡처나 실험을 할 필요는 없습니다.
 
 [호환성 이슈 양식](https://github.com/impacifist/Windows-GPU-UNLOCK/issues/new?template=compatibility.yml)을 이용합니다. 양식이 없으면 일반 이슈도 가능합니다.
 

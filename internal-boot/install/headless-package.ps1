@@ -27,13 +27,14 @@ function Get-HeadlessProfileIdentity([string]$Profile){
   'ASUS-ROG-STRIX-Z690-I-4601-RTX3090TI'{return @{Board='ROG STRIX Z690-I GAMING WIFI';Bios='4601'}}
   'ASUS-TUF-B650M-PLUS-WIFI-3057-RTX3090-FE'{return @{Board='TUF GAMING B650M-PLUS WIFI';Bios='3057'}}
   'ASUS-TUF-GAMING-B660M-E-D4-4003-RTX3070TI'{return @{Board='TUF GAMING B660M-E D4';Bios='4003'}}
+  'ASUS-TUF-GAMING-B660M-E-D4-4003-RTX3090TI'{return @{Board='TUF GAMING B660M-E D4';Bios='4003'}}
  }
  throw ('Unknown hardware profile: '+$Profile)
 }
 function Assert-HeadlessPackage([string]$Repo){
  $null=Assert-HeadlessLocalConfig $Repo
  $m=Get-Content -LiteralPath (Join-Path $Repo 'internal-boot/boot/build/headless/manifest.json') -Raw | ConvertFrom-Json
- if($m.Format -ne 2 -or $m.Mode -ne 'single-rtx-headless-unlock-then-windows' -or $m.CanUnlock -ne $true -or $m.RequiresHumanKey -ne $false -or $m.HardwareProfile -notin @('ASUS-ROG-STRIX-Z690-I-4601-RTX3090TI','ASUS-TUF-B650M-PLUS-WIFI-3057-RTX3090-FE','ASUS-TUF-GAMING-B660M-E-D4-4003-RTX3070TI')){throw 'Unexpected headless package profile'}
+ if($m.Format -ne 2 -or $m.Mode -ne 'single-rtx-headless-unlock-then-windows' -or $m.CanUnlock -ne $true -or $m.RequiresHumanKey -ne $false -or $m.HardwareProfile -notin @('ASUS-ROG-STRIX-Z690-I-4601-RTX3090TI','ASUS-TUF-B650M-PLUS-WIFI-3057-RTX3090-FE','ASUS-TUF-GAMING-B660M-E-D4-4003-RTX3070TI','ASUS-TUF-GAMING-B660M-E-D4-4003-RTX3090TI')){throw 'Unexpected headless package profile'}
  $actual=Get-HeadlessInputInventory $Repo -WithContract
  if($actual.Count -ne $m.Inputs.Count){throw 'Build source set changed; rebuild the package'}
  # Normalize manifest ordering from cross-platform builders; compare every path/hash.

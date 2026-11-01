@@ -2,8 +2,47 @@
 
 **English** | [한국어](README.ko.md)
 
+Contributor tooling: [entry-point inventory and cleanup proposal](docs/ENTRYPOINT-PLAN.en.md).
+
 Experimental UEFI GPU unlock and direct Windows handoff, expanded through
 community contributions.
+
+[![Join our Discord community](https://img.shields.io/badge/Join%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/WjKsjEqxF)
+[![View compatibility and supported configurations](https://img.shields.io/badge/Compatibility-455A64?style=for-the-badge)](docs/COMPATIBILITY.en.md)
+[![Contribute research and improvements](https://img.shields.io/badge/Contribute-37474F?style=for-the-badge&logo=github&logoColor=white)](docs/CONTRIBUTING.en.md)
+
+## Start here
+
+**Want to find out about your PC or help report compatibility? Start with a Windows-only check.** You do not need to attempt an unlock.
+
+| Your goal | What to do |
+| :--- | :--- |
+| **I'm new. What information should I report?** | [Beginner guide: check your PC and share results](docs/START-HERE.en.md) |
+| **I already have capture files from my PC** | [Check those files offline](docs/START-HERE.en.md#2--check-existing-files) |
+| **I want to know which setups have worked** | [Reported setups and their limits](docs/CONFIRMED-SETUPS.en.md) |
+| **I'm ready to investigate an unlock** | [Check the exact configuration and boot route first](docs/COMPATIBILITY.en.md) |
+
+### Quick check · No reboot
+
+Download **Code → Download ZIP**, extract it, and open PowerShell in the extracted project folder. With Python 3.10+ installed, run:
+
+```powershell
+python -I .\tools\collect_compatibility.py
+```
+
+This prints hardware/driver information; it does not unlock, change settings or upload anything. **`not-assessed` and `can_unlock: false` are normal.** Remove personal details from the output, then paste the reviewed text into a [compatibility report](https://github.com/impacifist/Windows-GPU-UNLOCK/issues/new?template=compatibility.yml). Do not attach firmware or raw dumps.
+
+> [!TIP]
+> No Python or terminal experience? The [step-by-step guide](docs/START-HERE.en.md) explains how to start, what the result means and what to share. You can also enter hardware details manually; no EFI test is required to report findings.
+
+## Community
+
+Join our [Discord community](https://discord.gg/WjKsjEqxF) for conversations,
+work-in-progress findings, and collaborative development and research.
+Keep substantial research results, reproducible test reports, code reviews,
+and project decisions in [GitHub issues](https://github.com/impacifist/Windows-GPU-UNLOCK/issues)
+and pull requests so everyone can find and review them. Please read the
+[community rules](docs/DISCORD-RULES.en.md).
 
 The [ASUS Z690-I / RTX 3090 Ti profile](evidence/z690i-3090ti-usb/README.md)
 has contributor-reported USB and internal EFI unlock results. Matched BF16
@@ -18,10 +57,13 @@ GPU model.** Check the linked motherboard, BIOS and card requirements before bui
 | GPU | Current status | Details |
 |---|---|---|
 | **RTX 3060 12GB (GA104 / GA106)** | Hardware success reported; headless USB only | [GA104](docs/COMPATIBILITY.en.md#profile-4-asus-prime-b660-plus-d4--rtx-3060-12gb-headless-usb) · [GA106](docs/COMPATIBILITY.en.md#profile-5-gigabyte-h610m-h--rtx-3060-12gb-ga106-headless-usb) |
+| **RTX 3060 Ti 8GB (24c9 / GA104)** | Contributor LOCAL USB success reported; experimental automatic profile | [Exact conditions](docs/COMPATIBILITY.en.md#reported-local-profile-success) |
+| **RTX 3070 8GB (2484 / GA104)** | Contributor LOCAL USB success reported; experimental automatic profile | [Exact conditions](docs/COMPATIBILITY.en.md#reported-local-profile-success) |
 | **RTX 3070 Ti 8GB** | Hardware success reported; internal headless | [Supported configuration](docs/COMPATIBILITY.en.md#profile-2-asus-tuf-b660m-e-d4--rtx-3070-ti-aggregate-console) |
-| **RTX 3080** | No dedicated profile in this port; upstream project target | [Project origins](THIRD_PARTY_NOTICES.md) |
+| **RTX 3080 12GB (220a / GA102)** | Contributor USB success; narrow experimental LOCAL admission, with reported DP recovery limitation | [Exact setup and evidence](evidence/b550-3080-12gb-local/README.md) |
+| **Other RTX 3080 / RTX 3080 Ti** | Private/research success reports; not general upstream profile support | [Setup audit](docs/CONFIRMED-SETUPS.en.md) |
 | **RTX 3090 FE 24GB** | Hardware success recorded; internal headless; default profile | [Supported configuration](docs/COMPATIBILITY.en.md#profile-1-asus-tuf-b650m--rtx-3090-fe-original) |
-| **RTX 3090 Ti 24GB** | Hardware success reported; USB and internal on exact profiles | [X870 USB](docs/COMPATIBILITY.en.md#profile-3-gigabyte-x870-aorus-elite-wifi7--rtx-3090-ti-headless-usb) · [Z690-I USB/internal](evidence/z690i-3090ti-usb/README.md) |
+| **RTX 3090 Ti 24GB** | Hardware success reported; route depends on exact system | [X870 USB](docs/COMPATIBILITY.en.md#profile-3-gigabyte-x870-aorus-elite-wifi7--rtx-3090-ti-headless-usb) · [B660M internal](docs/COMPATIBILITY.en.md#profile-6-asus-tuf-b660m-e-d4--colorful-rtx-3090-ti-internal) · [Z690-I USB/internal](evidence/z690i-3090ti-usb/README.md) |
 
 The [compatibility guide](docs/COMPATIBILITY.en.md) lists exact build profiles and
 distinguishes maintainer tests from contributor reports. Results concern their
@@ -33,11 +75,13 @@ tree has changes beyond that tag, including the USB route and X870 profile; thos
 are not a newly published release. Build locally with your own partition GUIDs.
 Firmware assets and private, partition-specific EFI binaries are not bundled.
 
+[All reported working setups and profile coverage](docs/CONFIRMED-SETUPS.en.md) · [Complete issue audit](docs/ISSUE-AUDIT.en.md).
+
 ## Choose the correct boot path
 
 | Path | Display and input | Instructions |
 |---|---|---|
-| **Internal headless** | B650M/3090 FE or B660M/3070 Ti profile; monitors on RTX; display temporarily removed; no T/U/Enter | [Internal headless guide](docs/HEADLESS.en.md) |
+| **Internal headless** | B650M/3090 FE or B660M/3070 Ti / 3090 Ti profile; monitors on RTX; display temporarily removed; no T/U/Enter | [Internal headless guide](docs/HEADLESS.en.md) |
 | **Headless USB** | Reported RTX 3060 / 3090 Ti configurations; profile-specific wrapper and child on a FAT32 USB stick | [Headless USB guide](docs/HEADLESS-USB.en.md) |
 | Internal AMD-display manual / Auto | Original B650M profile, motherboard/iGPU display preserved; manual variant requires U | [Existing internal guide](docs/INTERNAL-BOOT.en.md) |
 | Legacy USB manual | Original AMD/iGPU display profile; U once, then Boot Override to Windows without reset | [Legacy USB guide](docs/GUIDE.en.md) |
@@ -49,6 +93,10 @@ AMD display requirement. BIOS priority `USB → Windows` alone does not implemen
 direct handoff.
 
 ## Internal headless quick start
+
+<details>
+<summary><strong>Advanced · Exact-profile internal headless setup</strong></summary>
+
 
 **This example is for the default B650M / RTX 3090 FE profile.** For B660M,
 select `-HardwareProfile b660m-3070ti` in both configuration and build as described
@@ -115,6 +163,9 @@ Windows-first recovery is independent of experimental EFI/build artifacts and
 still works without saved state. Restoring the prior Fast Startup setting needs
 that state; retain it and backups. [Recovery details](docs/HEADLESS.en.md#recovery).
 
+
+</details>
+
 ## Original B650M results and limits
 
 The original B650M hardware run's successful child reported SS0 `0x88888888`, SS1 `0x8`, BME disabled, zero
@@ -143,7 +194,27 @@ baseline: FP16 1.88–1.92×, BF16 1.92–1.95×, TF32 1.93–1.94× over two bo
 to their reported builds; a later successful build or host test does not extend
 the physical test record.
 
+## Check existing captures
+
+An [offline compatibility checker](docs/CHECK-COMPATIBILITY.en.md) explains whether
+existing probe captures fit the automatic local-profile route and what is missing.
+It needs only Python 3.10+ and runs no probe or unlock:
+
+```powershell
+python -I research/profile/check-compatibility.py "D:\RTX3090-UNLOCK"
+```
+
+A candidate still needs profile generation, host tests and hardware validation.
+An out-of-scope result does not rule out an exact existing fixed profile.
+Use `--json` for a reviewed-shareable report with limited model/topology observations;
+paste it into the optional offline report field in a [compatibility issue](https://github.com/impacifist/Windows-GPU-UNLOCK/issues/new?template=compatibility.yml).
+The guide also covers comparing two reports to investigate common differences.
+
 ## Implementation and boundaries
+
+The [GPU family layer](docs/GPU-FAMILIES.en.md) shares reviewed GA102/GA104/GA106
+traits and identical firmware templates, while exact card/platform pins remain
+separate. Existing profile names and support scope are unchanged.
 
 Headless is a separate compile-time profile. Exact GPU/PROM/PCI state, firmware
 driver code, ownership, cold state, immutable selectors and cleanup checks remain.
@@ -164,10 +235,28 @@ support. New systems require [compatibility reporting](docs/CONTRIBUTING.en.md) 
 [portability validation](docs/PORTABILITY.en.md). A machine inside the hardware-proven envelope
 can build and test its own local profile with the [new-machine pipeline](docs/NEW-MACHINE.en.md).
 This experimental workflow inventories NVIDIA display devices, but deep capture is
-limited to one RTX 3090 / 3090 Ti in the reviewed PCI/BAR state. A generated local
+limited to one reviewed RTX 3090 / 3090 Ti, RTX 3060 12GB, RTX 3060 Ti `24c9` or RTX 3070 `2484` identity in the reviewed PCI/BAR state.
+The generic probe also records optional parent PCI information when its observation
+conditions match, helping investigate motherboard differences. This does not enable an unlock or correct PCI state. A generated local
 profile does not add another verified machine profile. USB write builds require all
-19 host jobs and unchanged profile, fixtures and build inputs; hardware validation
-is still required. Staging the unlock package needs `-StageUnlock`.
+22 host jobs, including fresh PCI identity checks, input policy and the topology-specific complete driver-release replay, and unchanged profile,
+fixtures and build inputs; hardware validation is still required. Within this envelope
+the generic probe discovers the bus automatically and the generated profile pins it per
+machine. An optional `-TargetBus` constrains discovery and resumed captures.
+LOCAL discovery also accepts captured PNP0A03/PNP0A08 root identities and up to 16 PCI
+path nodes, pinning the complete ancestry and checking the exact PCI parent. This
+experimental bridge-chain support still requires per-machine validation.
+LOCAL discovery and generation can pin a unique target on any 16-bit PCI segment.
+Prepare, release and PCI access must match that segment as well as the captured bus;
+nonzero-segment operation is experimental and still needs physical validation.
+Single-RTX systems may have no iGPU or separate EDID driver on the non-aggregate path.
+Without a separate EDID driver, non-aggregate LOCAL generation/replay accepts one
+to four unique NVIDIA display children. Three/four-child paths remain experimental;
+four-child coverage is host-only. EDID-driver and aggregate generation retain a two-child limit.
+Recognized AMI aggregate consoles with one or
+two display children can generate an experimental local profile and require their own
+prepare/release replay; this does not establish another hardware success. Multiple NVIDIA GPUs are not generated.
+Staging the unlock package needs `-StageUnlock`.
 
 ## License and attribution
 

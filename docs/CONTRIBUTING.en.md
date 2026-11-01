@@ -2,6 +2,8 @@
 
 **English** | [한국어](CONTRIBUTING.ko.md)
 
+Maintainers: use the [compatibility triage guide](COMPATIBILITY-TRIAGE.en.md) to track missing evidence, related reports and actual Windows outcomes separately from support qualification.
+
 Reports from other motherboard, CPU and GPU configurations help prioritize ports. **Submitting a report does not require booting the EFI, changing BIOS settings or running the unlock.** EFI support is restricted to the exact [published machine profiles](COMPATIBILITY.en.md); a matching GPU model alone is insufficient.
 
 ## Collect an inventory on Windows
@@ -27,6 +29,12 @@ Exit code `0` means the selected Windows inventory sections were collected, **no
 `assessment.status` is always `not-assessed`, and `can_unlock` is always `false`, including on a machine whose visible model names match the successful case. Secure Boot state, the physical monitor route, PCI BDF/BARs, PROM, cold state and pre-boot cleanup readiness are not collected. A virtual/non-PCI display adapter has `pci: null` and an explicit `pci_status`; that is not a support verdict. Missing or malformed PCI IDs make collection partial. WMI driver-version strings may differ from NVIDIA's marketing version; do not compare them as if they used the same numbering.
 
 ## Share a report manually
+
+Already have probe captures? The [offline checker](CHECK-COMPATIBILITY.en.md) produces
+a reviewed-shareable JSON report with refusal reasons and limited model/topology
+observations. Paste it into the form's optional offline report field. Its comparison
+tool helps identify differences between two checker reports. Neither tool runs an
+unlock; no new capture or experiment is required to submit an issue.
 
 Open a [compatibility report issue](https://github.com/impacifist/Windows-GPU-UNLOCK/issues/new?template=compatibility.yml), or a plain issue if the form is unavailable. Include:
 
